@@ -37,7 +37,7 @@ const EquipmentDetails = () => {
         );
         if (res.status === 200) {
           setFormData(res.data);
-          console.log(res.data);
+
           setAadharCard(res.data.aadhar_card_url);
           setKisanCreditCard(res.data.kisan_credit_card_url);
         }

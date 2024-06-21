@@ -14,7 +14,6 @@ const RecentIssues = () => {
           { decryptedUID }
         );
         if (res.status === 200) {
-          console.log(res.data.issues);
           setRecentIssues(res.data.issues);
         }
       } catch (error) {
@@ -23,7 +22,6 @@ const RecentIssues = () => {
     };
 
     fetchRecentFeedbacks();
-    console.log("Fetching All Data");
   }, [decryptedUID]);
 
   return (

@@ -16,7 +16,6 @@ const LabourerManagement = () => {
         );
         if (res.status === 200) {
           setJobData(res.data);
-          console.log(res.data);
         }
       } catch (error) {
         console.error(error);

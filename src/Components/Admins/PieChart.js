@@ -18,7 +18,6 @@ const PieChart = () => {
           { decryptedUID }
         );
         setPieChartData(response.data.issues);
-        console.log(response.data.issues);
       } catch (error) {
         console.error("Error fetching Pie Chart data:", error);
       }

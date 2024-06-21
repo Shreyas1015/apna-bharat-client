@@ -51,10 +51,8 @@ const LaboursJobListingContent = () => {
           { decryptedUID }
         );
         if (res.data.message === 1) {
-          console.log("Eligible");
           setIsEligible(true);
         } else if (res.data.message === 0) {
-          console.log(" Not Eligible");
           setIsEligible(false);
         }
       } catch (error) {

@@ -70,7 +70,7 @@ const ResidentReportIssueContent = () => {
 
       const data = await response.json();
       const { signature, expire, token } = data;
-      console.log("Authentication parameters:", { signature, expire, token });
+
       return { signature, expire, token };
     } catch (error) {
       console.error(`Authentication request failed: ${error.message}`);

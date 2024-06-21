@@ -17,7 +17,7 @@ const AppliedApplications = () => {
         );
         if (res.status === 200) {
           setJobData(res.data);
-          console.log(res.data[0]);
+          
         }
       } catch (error) {
         console.error(error);

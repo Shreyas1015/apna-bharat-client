@@ -13,7 +13,6 @@ const SuccessPage = () => {
   useEffect(() => {
     const handlePaymentSuccess = async () => {
       try {
-        console.log("Session Id :", sessionId);
         const response = await axiosInstance.post(
           `${process.env.REACT_APP_BASE_URL}/customers/success`,
 

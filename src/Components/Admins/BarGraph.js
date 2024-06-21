@@ -23,7 +23,7 @@ const BarGraph = () => {
           { decryptedUID }
         );
         setBarGraphData(response.data.issues);
-        console.log(response.data.issues);
+      
       } catch (error) {
         console.error("Error fetching bar graph data:", error);
       }

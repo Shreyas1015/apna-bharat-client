@@ -24,7 +24,7 @@ const LineGraph = () => {
           `${process.env.REACT_APP_BASE_URL}/admin/getReportedIssuesCountOverTime`,
           { decryptedUID, timePeriod }
         );
-        console.log(response.data);
+
         setLineChartData(response.data);
       } catch (error) {
         console.error("Error fetching Line Chart data:", error);

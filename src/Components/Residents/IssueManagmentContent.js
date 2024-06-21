@@ -24,7 +24,6 @@ const IssueManagmentContent = () => {
         if (res.status === 200) {
           setIssueData(res.data);
           setFilteredIssueData(res.data);
-          console.log(res.data);
         }
       } catch (error) {
         console.error(error);

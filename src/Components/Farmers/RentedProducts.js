@@ -17,7 +17,6 @@ const RentedProducts = () => {
         );
         if (res.status === 200) {
           setEquipmentData(res.data);
-          console.log(res.data[0]);
         }
       } catch (error) {
         console.error(error);

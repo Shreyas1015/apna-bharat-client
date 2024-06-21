@@ -18,7 +18,6 @@ const RefreshTokenModal = () => {
       );
 
       if (response.status === 200) {
-        console.log(response.data);
         navigate("/wishlist");
       }
     } catch (error) {
