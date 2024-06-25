@@ -101,7 +101,7 @@ const PaymentManagement = () => {
                   <td>{new Date(job.startdate).toDateString()}</td>
                   <td>{new Date(job.enddate).toDateString()}</td>
                   <td>{job.workinghours} / Per Day</td>
-                  <td>{job.wagesalary} / Per Day</td>
+                  <td>{job.wagesalary} </td>
                   <td>{job.user_name}</td>
                   <td>{job.user_email}</td>
                   <td>{job.user_phone_number}</td>

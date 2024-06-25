@@ -287,3 +287,7 @@
 select[multiple] {
   height: auto;
 }
+
+.spinner {
+  width: 10vw;
+}

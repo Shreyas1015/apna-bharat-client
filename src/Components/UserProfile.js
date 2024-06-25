@@ -13,6 +13,9 @@ const UserProfile = () => {
   const [aadharCardBack, setAadharCardBack] = useState("");
   const [profileIMG, setProfileIMG] = useState("");
   const [previousEmail, setPreviousEmail] = useState("");
+  const [loading1, setLoading1] = useState(false);
+  const [loading2, setLoading2] = useState(false);
+  const [loading3, setLoading3] = useState(false);
   const [updatedProfileIMG, setUpdatedProfileIMG] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
@@ -193,7 +196,7 @@ const UserProfile = () => {
 
       const data = await response.json();
       const { signature, expire, token } = data;
-     
+
       return { signature, expire, token };
     } catch (error) {
       console.error(`Authentication request failed: ${error.message}`);
@@ -258,7 +261,6 @@ const UserProfile = () => {
       );
 
       if (res.status === 200) {
-      
         alert("Profile Image uploaded!");
         window.location.reload();
       } else {
@@ -306,6 +308,7 @@ const UserProfile = () => {
                 src={updatedProfileIMG}
                 alt="Not available"
               />
+
               <form onSubmit={handleProfileImg}>
                 <input type="hidden" name="uid" value={decryptedUID} />
                 <div className="input-group me-5 py-3">
@@ -322,19 +325,32 @@ const UserProfile = () => {
                       tags={["tag1"]}
                       useUniqueFileName={true}
                       isPrivateFile={false}
+                      onChange={(e) => {
+                        setLoading1(true);
+                      }}
                       onSuccess={(r) => {
                         setProfileIMG(r.url || "");
+                        setLoading1(false);
                         alert("Uploaded");
                       }}
-                      onError={(e) => console.log(e)}
+                      onError={(e) => {
+                        setLoading1(false);
+                        console.log(e);
+                      }}
                     />
                   </IKContext>
+                </div>
+                {loading1 === true ? (
+                  <div className="spinner-border text-info" role="status">
+                    <span className="visually-hidden">Loading...</span>
+                  </div>
+                ) : (
                   <input
                     type="submit"
-                    className="input-group-text blue-buttons"
+                    className=" btn btn-dark form-control"
                     value="Edit"
                   />
-                </div>
+                )}
               </form>
             </div>
             <div className="col-lg-9 p-4 ">
@@ -368,9 +384,8 @@ const UserProfile = () => {
                         onChange={handleProfileChange}
                       />
                       <button
-                        className="btn btn-sm"
+                        className="btn btn-sm btn-dark"
                         type="button"
-                        style={{ backgroundColor: "#0bbfe0", color: "white" }}
                         onClick={handleEmailVerification}
                       >
                         Send OTP
@@ -391,8 +406,7 @@ const UserProfile = () => {
                       />
 
                       <button
-                        className="btn btn-sm"
-                        style={{ backgroundColor: "#0bbfe0", color: "white" }}
+                        className="btn btn-sm btn-dark"
                         type="button"
                         onClick={confirmEmailVerification}
                       >
@@ -419,7 +433,7 @@ const UserProfile = () => {
                 <input
                   type="submit"
                   value="Edit Profile"
-                  className="form-control blue-buttons mt-4"
+                  className="form-control btn-dark mt-4"
                 />
               </form>
             </div>
@@ -437,55 +451,68 @@ const UserProfile = () => {
                     >
                       Aadhar Card Front:
                     </label>
-                    <IKContext
-                      publicKey={publicKey}
-                      urlEndpoint={urlEndpoint}
-                      authenticator={authenticator}
-                    >
-                      <IKUpload
-                        fileName={`${profileData.name}_aadharCardFront.jpg`}
-                        className="form-control"
-                        tags={["aadhar"]}
-                        folder={"/aadharCards"}
-                        onSuccess={(result) => {
-                          setAadharCardFront(result.url);
-                          alert("Uploaded");
-                        }}
-                        onError={(e) => console.log(e)}
-                      />
-                      {aadharCardFront && (
-                        <>
-                          <button
-                            onClick={handleViewButtonClick}
-                            className="view-button"
-                            type="button"
-                          >
-                            View
-                          </button>
-                          {isImageVisible && (
-                            <div
-                              className="image-preview-backdrop"
+                    {loading2 === true ? (
+                      <div className="spinner-border text-info" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : (
+                      <IKContext
+                        publicKey={publicKey}
+                        urlEndpoint={urlEndpoint}
+                        authenticator={authenticator}
+                      >
+                        <IKUpload
+                          fileName={`${profileData.name}_aadharCardFront.jpg`}
+                          className="form-control"
+                          tags={["aadhar"]}
+                          folder={"/aadharCards"}
+                          onChange={(e) => {
+                            setLoading2(true);
+                          }}
+                          onSuccess={(result) => {
+                            setAadharCardFront(result.url);
+                            setLoading2(false);
+                            alert("Uploaded");
+                          }}
+                          onError={(e) => {
+                            setLoading2(false);
+                            console.log(e);
+                          }}
+                        />
+                        {aadharCardFront && (
+                          <>
+                            <button
                               onClick={handleViewButtonClick}
+                              className="view-button btn btn-dark"
+                              type="button"
                             >
-                              <div className="image-preview">
-                                <IKImage
-                                  src={aadharCardFront}
-                                  alt={`${profileData.name} Aadhar Card Front`}
-                                  transformation={[
-                                    {
-                                      height: 500,
-                                      width: 500,
-                                      quality: 90,
-                                    },
-                                  ]}
-                                  loading="lazy"
-                                />
+                              View
+                            </button>
+                            {isImageVisible && (
+                              <div
+                                className="image-preview-backdrop"
+                                onClick={handleViewButtonClick}
+                              >
+                                <div className="image-preview">
+                                  <IKImage
+                                    src={aadharCardFront}
+                                    alt={`${profileData.name} Aadhar Card Front`}
+                                    transformation={[
+                                      {
+                                        height: 1000,
+                                        width: 1000,
+                                        quality: 90,
+                                      },
+                                    ]}
+                                    loading="lazy"
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </IKContext>
+                            )}
+                          </>
+                        )}
+                      </IKContext>
+                    )}
                   </div>
                 </div>
                 <div className="col-lg-6">
@@ -496,55 +523,68 @@ const UserProfile = () => {
                     >
                       Aadhar Card Back:
                     </label>
-                    <IKContext
-                      publicKey={publicKey}
-                      urlEndpoint={urlEndpoint}
-                      authenticator={authenticator}
-                    >
-                      <IKUpload
-                        fileName={`${profileData.name}_aadharCardBack.jpg`}
-                        className="form-control"
-                        tags={["aadhar"]}
-                        folder={"/aadharCards"}
-                        onSuccess={(result) => {
-                          setAadharCardBack(result.url);
-                          alert("Uploaded");
-                        }}
-                        onError={(e) => console.log(e)}
-                      />
-                      {aadharCardBack && (
-                        <>
-                          <button
-                            onClick={handleViewButtonClick}
-                            className="view-button"
-                            type="button"
-                          >
-                            View
-                          </button>
-                          {isImageVisible && (
-                            <div
-                              className="image-preview-backdrop"
+                    {loading3 === true ? (
+                      <div className="spinner-border text-info" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                      </div>
+                    ) : (
+                      <IKContext
+                        publicKey={publicKey}
+                        urlEndpoint={urlEndpoint}
+                        authenticator={authenticator}
+                      >
+                        <IKUpload
+                          fileName={`${profileData.name}_aadharCardBack.jpg`}
+                          className="form-control"
+                          tags={["aadhar"]}
+                          folder={"/aadharCards"}
+                          onChange={(e) => {
+                            setLoading3(true);
+                          }}
+                          onSuccess={(result) => {
+                            setAadharCardBack(result.url);
+                            setLoading3(false);
+                            alert("Uploaded");
+                          }}
+                          onError={(e) => {
+                            setLoading3(false);
+                            console.log(e);
+                          }}
+                        />
+                        {aadharCardBack && (
+                          <>
+                            <button
                               onClick={handleViewButtonClick}
+                              className="view-button btn btn-dark"
+                              type="button"
                             >
-                              <div className="image-preview">
-                                <IKImage
-                                  src={aadharCardBack}
-                                  alt={`${profileData.name} Aadhar Card Back`}
-                                  transformation={[
-                                    {
-                                      height: 500,
-                                      width: 500,
-                                      quality: 90,
-                                    },
-                                  ]}
-                                  loading="lazy"
-                                />
+                              View
+                            </button>
+                            {isImageVisible && (
+                              <div
+                                className="image-preview-backdrop"
+                                onClick={handleViewButtonClick}
+                              >
+                                <div className="image-preview">
+                                  <IKImage
+                                    src={aadharCardBack}
+                                    alt={`${profileData.name} Aadhar Card Back`}
+                                    transformation={[
+                                      {
+                                        height: 1000,
+                                        width: 1000,
+                                        quality: 90,
+                                      },
+                                    ]}
+                                    loading="lazy"
+                                  />
+                                </div>
                               </div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </IKContext>
+                            )}
+                          </>
+                        )}
+                      </IKContext>
+                    )}
                   </div>
                 </div>
               </div>
