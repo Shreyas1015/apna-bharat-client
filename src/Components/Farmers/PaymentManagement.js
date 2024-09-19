@@ -31,7 +31,7 @@ const PaymentManagement = () => {
     fetchAppliedApplications();
   }, [decryptedUID]);
 
-  const handleCheckout = async (jobTitle, wageSalary) => {
+  const handleCheckout = async (jobTitle, wageSalary, userName) => {
     const stripe = await stripePromise;
 
     const lineItems = [
@@ -47,12 +47,24 @@ const PaymentManagement = () => {
       },
     ];
 
+    const customerDetails = {
+      name: userName,
+      address: {
+        line1: "Customer Address Line 1", 
+        city: "Customer City",
+        state: "Customer State",
+        country: "IN",
+        postal_code: "Customer Postal Code", 
+      },
+    };
+
     try {
       const response = await axiosInstance.post(
         `${process.env.REACT_APP_BASE_URL}/farmers/create-checkout-session`,
         {
           lineItems,
           decryptedUID,
+          customerDetails,
         }
       );
 
@@ -109,7 +121,11 @@ const PaymentManagement = () => {
                     <button
                       className="btn btn-primary"
                       onClick={() =>
-                        handleCheckout(job.jobtitle, job.wagesalary)
+                        handleCheckout(
+                          job.jobtitle,
+                          job.wagesalary,
+                          job.user_name
+                        )
                       }
                     >
                       Pay
